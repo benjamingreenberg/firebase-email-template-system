@@ -1,0 +1,187 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Demo</title>
+</head>
+
+<body style="max-width: 800px; margin: auto; padding: 20px;">
+  <h1 style="margin-bottom: 5px;">Demo</h1>
+  <h2 style="margin-bottom: 5px;">Intro</h2>
+
+  <p style="margin-top: 5px;">
+    You should have followed the instructions in README.md, and are now
+    reading this in your browser after running "firebase serve" and going to
+    the URL for the getEmail endpoint, or in an email after going to
+    the URL for the sendEmail endpoint.
+  </p>
+
+  <p style="margin-top: 5px;">
+    I recommend you first read the <a href="https://github.com/janl/mustache.js">
+    mustache.js github page</a>, then open demo_template.html and demo_data.js in your editor
+    and refer to them as you continue to read this document.
+  </p>
+
+  <h2 style="margin-bottom: 5px;">Checking if demo_data.js is as expected</h2>
+  <!--
+      You will only see the content between {{ ^demo_check }} and {{ /demo_check }}
+      in the browser if emailData.demo_check is NOT in demo_data.js or is falsy.
+    -->
+  {{ ^demo_check }}
+  <h3 style="margin-bottom: 5px;">"demo_check" missing</h3>
+  <p style="margin-top: 5px;">
+    Something went wrong when attempting to process the demo files.
+    emailData.demo_check was not found in demo_data.js or is falsy (an empty string,
+    boolean false, empty array, etc).
+  </p>
+
+  <p style="margin-top: 5px;">
+    Hopefully, this happened because you were following the instructions in
+    the demo. This is an example of how to use an "Inverted Section" in
+    mustache.js to render content only when a property does <b>NOT</b> exist
+    or is falsy.
+  </p>
+
+    {{ #not_demo_check }}
+    <h3 style="margin-bottom: 5px;">"not_demo_check" found</h3>
+    <p style="margin-top: 5px;">
+      You are seeing this if you renamed "demo_check" to "not_demo_check"
+      (or if there is a "not_demo_check" property, AND "demo_check" is
+      missing/falsy)! Note that this isn't showing you the value of the
+      "not_demo_check" property. demo_template.html only checks if the property is there
+      and has a value; it does not output it.
+    </p>
+
+    <p style="margin-top: 5px;">
+      This is an example of using a "Section" in mustache.js to show content only
+      if a property DOES exist... well, technically this is an example of how to show
+      content if a property exists, but only when another property doesn't! In
+      other words, you will only see this when the "demo_check" property does NOT
+      exist, AND the "not_demo_check" property DOES exist.
+    </p>
+    {{ /not_demo_check }}
+  {{ /demo_check }}
+
+  <!--
+    You will only see the content below this line if emailData.demo_check is in
+    demo_data.js and has a non-falsy value.
+  -->
+  {{ #demo_check }}
+  <p style="margin-top: 5px;">
+    The "demo_check" property was found in demo_data.js. You can edit demo_data.js, and
+    temporarily delete or rename the "demo_check" property (maybe to
+    "not_demo_check") to see how it changes the output. This is an example of
+    using a "Section" in mustache.js to show content only when a property exists
+    and has a value.
+  </p>
+
+  <h2 style="margin-bottom: 5px;">A missing property results in blank output</h2>
+
+  <p style="margin-top: 5px;">
+    Here is an unordered list with three list items...
+  </p>
+
+  <ul>
+    <li>The second list item is &#123;&#123; second_list_item &#125;&#125; and shows the value of the "second_list_item" property in demo_data.js</li>
+    <li>{{ second_list_item }}</li>
+    <li>{{ third_list_item }}</li>
+  </ul>
+
+  <p style="margin-top: 5px;">
+    Add the "third_list_item" property to demo_data.js with a non-empty
+    string as its value, and then refresh the page to see how it changes the
+    output.
+  </p>
+
+  <h2 style="margin-bottom: 5px;">Using arrays</h2>
+
+  <h3 style="margin-bottom: 5px;">Array of strings</h3>
+  <p style="margin-top: 5px;">
+    If you look in demo_template.html, you will see that there is only one &lt;li&gt;
+    element, even though you can see three list items below in your browser.
+    This is an example of using an array of strings to render a list of items:
+  </p>
+
+  <ul>
+    {{ #array_of_strings }}
+    <li>{{ . }}</li>
+    {{ /array_of_strings }}
+  </ul>
+
+  <p style="margin-top: 5px;">
+    You can add or remove elements from the "array_of_strings" property in
+    demo_data.js to see how it changes the output.
+  </p>
+
+  <h3 style="margin-bottom: 5px;">Array of objects</h3>
+  <p style="margin-top: 5px;">
+    This is an example of using an array of objects to render a list of items.
+    Mustache.js will loop through the objects in the "array_of_objects" property
+    and create a list item for each one. An object's "name" property will be
+    used for the value of its corresponding list item.
+  </p>
+
+  <ul>
+    {{ #array_of_objects }}
+    <li>{{ name }}</li>
+    {{ /array_of_objects }}
+  </ul>
+
+  <h4 style="margin-bottom: 5px;">Suppress output when object missing property</h4>
+  <p style="margin-top: 5px;">
+    Notice that mustache.js will create an empty list item if an object does not
+    have a "name" property. You can add a Section for the "name" property inside
+    the "array_of_objects" Section so that it does not render a list item when
+    the "name" property is missing or empty.
+  </p>
+
+  <ul>
+    {{ #array_of_objects }}
+      {{ #name }}
+      <li>{{ name }}</li>
+      {{ /name }}
+    {{ /array_of_objects }}
+  </ul>
+
+  <p style="margin-top: 5px;">
+    You can add the missing "name" property, and make its value an empty string
+    to see that the output is the same as when the property is missing.
+  </p>
+
+  <h4 style="margin-bottom: 5px;">Alternate value when property missing</h4>
+  <p style="margin-top: 5px;">
+    You can use a combination of a Section and Inverted Section to define an
+    alternate value when a property is missing.
+  </p>
+
+  <ul>
+    {{ #array_of_objects }}
+      {{ #name }}
+      <li>{{ name }}</li> <!-- This is rendered when an object has a "name" property -->
+      {{ /name }}
+      {{ ^name }}
+      <li>Object with id {{ id }} does not have a name</li> <!-- This is rendered when an object does NOT have a "name" property -->
+      {{ /name }}
+    {{ /array_of_objects }}
+  </ul>
+
+  <p style="margin-top: 5px;">
+    You can add the missing "name" property, and make its value an empty string
+    to see that the output is the same as when the property is missing.
+  </p>
+
+  <h2 style="margin-bottom: 5px;">Conclusion</h2>
+
+  <p style="margin-top: 5px;">
+    I hope this brief intro helps. Please read the <a href="https://github.com/janl/mustache.js">
+    mustache.js github page</a> for more examples and details about using
+    mustache.js.
+  </p>
+  {{ /demo_check }}
+</body>
+
+</html>
