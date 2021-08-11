@@ -4,6 +4,13 @@
 
 + [About](#about)
 + [Getting Started](#getting-started)
+  + [Prerequisites](#prerequisites)
+  + [Installing](#installing)
+    + [Functions](#functions)
+    + [Initialize Firebase](#initialize-firebase)
+    + [Configure](#configure)
++ [Demo/Tutorial](#demo---tutorial)
++ [Deployment](#deployment)
 + [Usage](#usage)
 
 ## About
@@ -41,6 +48,8 @@ own system.
 
 ### Installing
 
+#### Firebase Project
+
 Log into the Firebase Cloud Console, and create a new Firebase Project.
 
 Go to the Functions page in the Cloud Console, and click the link to upgrade the
@@ -48,6 +57,8 @@ project to the "Blaze" billing plan; a project must be assigned a
 [Billing Account](https://cloud.google.com/billing/docs) to use Cloud Functions.
 You shouldn't exceed the free tier usage during development, but you can set a
 Budget Alert for $1 just in case.
+
+#### Initialize Firebase
 
 Go to the project's directory after downloading or cloning it to your system,
 and initialize Firebase:
@@ -73,14 +84,12 @@ Make the following selections:
   your system
 + Emulator UI: Optional
 
-Copy default_config.js to config.js, and make any necessary changes.
+#### Configure
 
-+ sendGridApiKey: isn't required if you will be including one with all requests.
-+ useDemoFiles: if set to true, requests without an emailData object will use
-  templates/demo_template.html and demo_data.js to build the email. When set to
-  false, requests without an emailData object will return an error.
+Copy default_config.js to config.js, and follow the instructions in the file for
+filling in the values.
 
-## Demo / Tutorial
+## Demo - Tutorial
 
 Copy default_demo_data.js to demo_data.js, and templates/default_demo_template.html
 to templates/demo_template.html. These demo files contain a short
@@ -113,7 +122,7 @@ system should email the content of the demo to the email you specified in the
 demo_data.js file. The email will contain both an HTML and plain-text version of
 the content.
 
-### Deployment
+## Deployment
 
 **The deployed endpoints can be reached by anyone that knows the addresses.
 This project does not have any authentication or access controls. It should not
