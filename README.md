@@ -77,13 +77,13 @@ Copy default_config.js to config.js, and make any necessary changes.
 
 + sendGridApiKey: isn't required if you will be including one with all requests.
 + useDemoFiles: if set to true, requests without an emailData object will use
-  demo_template.html and demo_data.js to build the email. When set to false,
-  requests without an emailData object will return an error.
+  templates/demo_template.html and demo_data.js to build the email. When set to
+  false, requests without an emailData object will return an error.
 
 ### Optional
 
-Copy default_demo_template.html to demo_template.html, and
-default_demo_data.js to demo_data.js. These demo files contain a short
+Copy default_demo_data.js to demo_data.js, and templates/default_demo_template.html
+to templates/demo_template.html. These demo files contain a short
 introduction / hands-on tutorial on how to use mustache.js to build templates.
 They can also be used to quickly verify that everything is configured correctly
 using your browser.
@@ -149,29 +149,32 @@ Project Console: https://console.firebase.google.com/project/my-project/overview
 
 Send requests to the getEmail or sendEmail https endpoints. You can find the
 URLs for the deployed endpoints by browsing to the "Functions" tab of the
-Project Console in Firebase.
+Project Console in Firebase. The endpoints will respond the same to GET or POST
+requests.
 
 The request header should have "content-type" set to "application/json", and the
 request body should be a JSON object with a property named "emailData"
 containing the data that mustache.js will use to replace the tags in the
 template file.
 
-"templateFile" is the only property that must be set in emailData to use the
-getEmail endpoint, assuming the file it specifies exists on the filesystem.
+The only requirement for the getEmail endpoint is that the emailData object has
+a "templateFile" property whose value is the name of a file located in the
+"templates" directory.
 
-The following emailData properties are required to use the sendEmail endpoint:
+For the sendEmail endpoint, the emailData object is required to have the
+following properties:
 
-+ templateFile
++ templateFile (the name of a file in the "templates" directory)
 + emailToAddress
 + emailFromAddress
 + emailFromName
 + emailSubject
 + sendGridApiKey (only if it isn't set in config.js)
 
-Below is an example of a request that can be sent in VSCode using the
+Below is an example of a request that you can send in VSCode using the
 [REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 It contains the same object that is in demo_data.js, and uses
-demo_template.html as the template file:
+templates/demo_template.html as the template file:
 
 ```http
 POST http://localhost:5000/my-project/us-central1/getEmail HTTP/1.1
@@ -185,7 +188,7 @@ content-type: application/json
     "emailFromAddress": "bar@example.com",
     "emailFromName": "Email template system",
     "emailSubject": "Email template system demo",
-    "demo_check": "See 'Checking if demo_data.js is as expected' in demo_template.html for information about this property.",
+    "demo_check": "See 'Checking if demo_data.js is as expected' in templates/demo_template.html for information about this property.",
     "second_list_item": "The third list item is {{ third_list_item }}, and will be blank because the 'third_list_item' property has been intentionally left out of demo_data.js",
     "array_of_strings": [
       "First list item",

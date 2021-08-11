@@ -1,4 +1,5 @@
 node_modules/
+templates/*
+!templates/default_demo_template.html
 demo_data.js
-demo_template.html
 config.js

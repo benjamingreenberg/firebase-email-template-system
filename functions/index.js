@@ -4,6 +4,7 @@ const mustache = require('mustache');
 const { sendEmail } = require('./util/email');
 const { settings } = require('./config');
 const fs = require('fs').promises;
+const sanitize = require("sanitize-filename");
 
 exports.getEmail = functions.https.onRequest( async (request, response) => {
   let emailData = request.body.emailData;
@@ -97,7 +98,7 @@ async function getEmailContent ( emailData ) {
     return Promise.reject( 'getEmailContent called with an invalid emailData parameter.' );
   }
 
-  const templateFile = emailData.templateFile;
+  const templateFile = 'templates/' + sanitize( emailData.templateFile );
   const templateContent = await getFileContents( templateFile );
   if ( ! templateContent ) {
     return Promise.reject( 'Unable to read template: ' + templateFile );
