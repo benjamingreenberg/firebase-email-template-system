@@ -80,13 +80,13 @@ Copy default_config.js to config.js, and make any necessary changes.
   templates/demo_template.html and demo_data.js to build the email. When set to
   false, requests without an emailData object will return an error.
 
-### Optional
+## Demo / Tutorial
 
 Copy default_demo_data.js to demo_data.js, and templates/default_demo_template.html
 to templates/demo_template.html. These demo files contain a short
-introduction / hands-on tutorial on how to use mustache.js to build templates.
-They can also be used to quickly verify that everything is configured correctly
-using your browser.
+introduction / tutorial on how to use mustache.js to build templates. They can
+also be used to quickly verify that everything is configured correctly using
+your browser.
 
 After copying the files, and setting useDemoFiles in config.js to true,
 you can get to the tutorial by starting the Firebase Functions Emulator
@@ -158,11 +158,11 @@ containing the data that mustache.js will use to replace the tags in the
 template file.
 
 The only requirement for the getEmail endpoint is that the emailData object has
-a "templateFile" property whose value is the name of a file located in the
-"templates" directory.
+a "templateFile" property whose value is the name of a file in the "templates"
+directory.
 
-For the sendEmail endpoint, the emailData object is required to have the
-following properties:
+For the sendEmail endpoint, the emailData object should have the following
+properties:
 
 + templateFile (the name of a file in the "templates" directory)
 + emailToAddress
