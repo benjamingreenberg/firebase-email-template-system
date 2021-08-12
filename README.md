@@ -18,6 +18,7 @@
   + [sendEmail Endpoint](#sendemail-endpoint)
   + [VSCode Rest Client Extension](#vscode-rest-client-extension)
 + [Demo/Tutorial](#demo---tutorial)
+  + [Using Demo files to develop templates](#using-demo-files-to-develop-templates)
 
 ## About
 
@@ -299,3 +300,12 @@ it is already set in ```config.js```). Browse to the URL for the ```sendEmail```
 endpoint, which is given when you run ```firebase serve``` (see above), and the
 system should email the demo to the email you specified in the
 ```demo_data.js``` file.
+
+### Using Demo files to develop templates
+
+You can use the demo files to develop templates on your local system. Edit
+ ```demo_data.js``` and change the values in ```emailData``` with values for the
+ template you are working on. Set ```useDemoFiles``` in ```config.js``` to
+ ```true```, start the Firebase Functions Emulator and browse to the URL of an
+ endpoint. You can then make changes to your template or ```emailData```, and
+ refresh your browser to see the results.
