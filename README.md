@@ -22,15 +22,19 @@
 ## About
 
 This project uses [Google Firebase](https://firebase.google.com/) as a back-end
-for a basic email template system. It creates HTTP endpoints to get and send
-emails that are generated using template files. [mustache.js](https://github.com/janl/mustache.js/)
-is used for the template syntax, and the mustache tags are replaced with data
-sent within the body of the HTTP request. [SendGrid](https://sendgrid.com/) is
-used to send the emails.
+for a basic email template system. It creates HTTP endpoints to generate emails
+from templates. Requests include the name of the template file to use, and
+what values to use for replacing the tags in the template. The system has two
+endpoints for receiving requests: ```getEmail``` responds back with the
+generated email, and ```sendEmail``` actually emails it.
+
+[mustache.js](https://github.com/janl/mustache.js/) is used for the template
+syntax, and [SendGrid](https://sendgrid.com/) is used to send the emails.
 
 I created this project as a learning exercise. It is not intended to be a robust
 and production-ready system. The method to prevent unauthorized connections is
-relatively basic, and no code exists for throttling requests.
+relatively basic, only one email can be included in each request, and the system
+has no mechanism to throttle requests.
 
 Also, it's not practical to have the template files reside on the filesystem.
 A change to a template requires you to redeploy to Firebase. It would be better
@@ -39,7 +43,7 @@ if the system used Firestore or Google Cloud Storage for the templates.
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your
-own system.
+own system, and deploy it to Firebase.
 
 ### Prerequisites
 
