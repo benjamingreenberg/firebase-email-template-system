@@ -44,7 +44,7 @@ own system.
 ### Prerequisites
 
 + [Node.js 14 and npm 7](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-+ [The Firebase CLI](https://firebase.google.com/docs/functions/get-started)
++ [The Firebase CLI](https://firebase.google.com/docs/functions/get-started#set-up-node.js-and-the-firebase-cli)
 + Google Cloud Platform account with a [Billing Account](https://cloud.google.com/billing/docs).
   This is required to enable Cloud Functions, but you should remain well below
   free-tier usage during development.
@@ -55,7 +55,8 @@ own system.
 
 #### Create Firebase Project
 
-Log into the Firebase Cloud Console, and create a new Firebase Project.
+Log into the Firebase Cloud Console, and create a new Firebase Project. There is
+no need to enable Analytics on the project.
 
 #### Functions
 
@@ -103,8 +104,8 @@ Make the following selections:
 
 #### Configure
 
-Copy ```default_config.js``` to ```config.js```, and follow the instructions in
-the file for filling in the values.
+Copy ```functions/default_config.js``` to ```functions/config.js```, and follow
+the instructions in the file for filling in the values.
 
 #### Create User
 
