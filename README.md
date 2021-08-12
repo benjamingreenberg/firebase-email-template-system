@@ -26,7 +26,7 @@ for a basic email template system. It creates HTTP endpoints to generate emails
 from templates. Requests include the name of the template file to use, and
 what values to use for replacing the tags in the template. The system has two
 endpoints for receiving requests: ```getEmail``` responds back with the
-generated email, and ```sendEmail``` actually emails it.
+generated email, and ```sendEmail``` actually emails it after it is generated.
 
 [mustache.js](https://github.com/janl/mustache.js/) is used for the template
 syntax, and [SendGrid](https://sendgrid.com/) is used to send the emails.
@@ -188,15 +188,16 @@ POST requests.
 
 The request header should have ```content-type``` set to ```application/json```,
 and the request body should be a JSON object with a property named ```emailData```
-containing the data that mustache.js will use to replace the tags in the
-template file.
+containing the data that the system will use to authenticate the request, build
+the email from a template file, and then return or email it.
 
 ### getEmail Endpoint
 
 Requests to the ```getEmail``` endpoint must include an ```emailData``` object,
-unless ```useDemoFiles``` is set to ```true``` in ```config.js```. In addition
-to the properties for replacing template tags, ```emailData``` must have the
-following properties:
+unless ```useDemoFiles``` is set to ```true``` in ```config.js``` (see
+the [Demo/Tutorial](#demo---tutorial) section below). In addition to the
+properties for replacing template tags, ```emailData``` must have the following
+properties:
 
 + appUserId
 + appUserKey
@@ -215,7 +216,12 @@ the email:
 + emailFromAddress
 + emailFromName
 + emailSubject
-+ sendGridApiKey (only if it isn't set in config.js)
++ sendGridApiKey (if not set in config.js)
+
+The system assumes that the template contains an HTML version of the email. It
+will create a plain-text version, and send a multi-part email with both. It will
+respond with ```true``` if the email was sent successfully, or ```false```
+otherwise.
 
 ### VSCode Rest Client Extension
 
@@ -224,7 +230,7 @@ Below is an example of a request that you can send in VSCode using the
 It contains the same object that is in ```demo_data.js```, and uses
  ```templates/demo_template.html``` as the template file. Replace the values in
  ```appUserId``` and ```appUserKey``` with the corresponding values for the user
- created in the Install step above.
+ created when installing the project.
 
 ```http
 POST http://localhost:5000/my-project/us-central1/getEmail HTTP/1.1
@@ -260,18 +266,18 @@ content-type: application/json
 
 ## Demo - Tutorial
 
-Copy ```default_demo_data.js``` to ```demo_data.js```, and
+There is a demo containing a short introduction / tutorial on how to use
+mustache.js to build templates. It can also be used to quickly verify that
+everything is configured correctly using your web browser.
+
+To enable the demo, set ```useDemoFiles``` in ```config.js``` to ```true```.
+Then copy ```default_demo_data.js``` to ```demo_data.js```, and
 ```templates/default_demo_template.html``` to ```templates/demo_template.html```.
-Open the ```demo_data.js``` file, and set ```appUserId``` and ```appUserKey``` to the
-corresponding values for the user created in the Install step above.
+Open the ```demo_data.js``` file, and set ```appUserId``` and ```appUserKey```
+to the corresponding values for the user created when installing the project.
 
-These demo files contain a short introduction / tutorial on how to use
-mustache.js to build templates. They can also be used to quickly verify that
-everything is configured correctly using your browser.
-
-After copying the files, and making sure ```useDemoFiles``` in ```config.js``` is set to
-```true```, you can get to the tutorial by starting the Firebase Functions Emulator
-and browsing to the URL for the ```getEmail``` endpoint. It will be in the form
+Start the Firebase Functions Emulator and browse to the URL for the
+```getEmail``` endpoint, which will be in the form
 ```http://localhost:PORT/PROJECT_ID/GOOGLE_CLOUD_REGION/getEmail```
 
 ```bash
@@ -287,11 +293,9 @@ i  functions: Watching "/path/to/my_project/functions" for Cloud Functions...
 ✔  functions[us-central1-sendEmail]: http function initialized (http://localhost:5000/my-project/us-central1/sendEmail).
 ```
 
-You can use the ```sendEmail``` endpoint to test sending emails. You will need to
-edit ```demo_data.js``` and add values to the ```emailToAddress``` and ```emailFromAddress```
-properties. You will also need to put your SendGrid API Key as the value of the
-```SendGridAPIKey``` property in ```demo_data.js``` or ```config.js```. Browse to the URL for
-the ```sendEmail``` endpoint that ```firebase serve``` outputs (see above), and the
-system should email the content of the demo to the email you specified in the
-```demo_data.js``` file. The email will contain both an HTML and plain-text version of
-the content.
+To test the ```sendEmail``` endpoint, edit ```demo_data.js``` and set values for
+```emailToAddress```, ```emailFromAddress```, and ```SendGridAPIKey``` (unless
+it is already set in ```config.js```). Browse to the URL for the ```sendEmail```
+endpoint, which is given when you run ```firebase serve``` (see above), and the
+system should email the demo to the email you specified in the
+```demo_data.js``` file.
