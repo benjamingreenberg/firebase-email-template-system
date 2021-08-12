@@ -1,4 +1,6 @@
 const emailData = {
+  appUserId: '',
+  appUserKey: '',
   sendGridApiKey: '',
   emailToAddress: '',
   emailFromAddress: '',

@@ -2,9 +2,25 @@ const functions = require('firebase-functions');
 const logger = functions.logger;
 const mustache = require('mustache');
 const { sendEmail } = require('./util/email');
+const user = require( './util/user' );
 const { settings } = require('./config');
 const fs = require('fs').promises;
 const sanitize = require("sanitize-filename");
+
+exports.install = functions.https.onCall( async ( data, context ) => {
+  const hasUsers = await user.hasUsers();
+  if ( hasUsers ) {
+    logger.error( 'User already exists.' );
+    return 'User already exists.';
+  }
+
+  logger.info( 'No users, creating first...' );
+  const firstUser = await user.add();
+  if ( ! firstUser ) {
+    return 'User not created, see logs for more information.';
+  }
+  return 'Initial account created. Send requests using Client ID ' + firstUser.id + ' and Key ' + firstUser.key;
+});
 
 exports.getEmail = functions.https.onRequest( async (request, response) => {
   let emailData = request.body.emailData;
@@ -18,7 +34,12 @@ exports.getEmail = functions.https.onRequest( async (request, response) => {
       return;
     }
     emailData = demoData;
+  }
 
+  const isValidUser = await user.isValid( emailData.appUserId, emailData.appUserKey );
+  if ( isValidUser !== true ) {
+    response.status(403).send( 'Not authorized' );
+    return;
   }
 
   let result = await getEmailContent( emailData ).catch( err => {
@@ -43,6 +64,13 @@ exports.sendEmail = functions.https.onRequest( async (request, response) => {
       return;
     }
     emailData = demoData;
+  }
+
+  const isValidUser = await user.isValid( emailData.appUserId, emailData.appUserKey );
+  logger.info( isValidUser, 'isValidUser' );
+  if ( isValidUser !== true ) {
+    response.status(403).send( 'Not authorized' );
+    return;
   }
 
   const content = await getEmailContent( emailData )
